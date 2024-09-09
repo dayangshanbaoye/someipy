@@ -22,7 +22,6 @@ from someipy.service import Service
 from someipy._internal.tcp_client_manager import TcpClientManager, TcpClientProtocol
 from someipy._internal.message_types import MessageType, ReturnCode
 from someipy._internal.someip_sd_builder import (
-    build_subscribe_eventgroup_ack_entry,
     build_offer_service_sd_header,
     build_subscribe_eventgroup_ack_sd_header,
 )
@@ -275,15 +274,15 @@ class ServerServiceInstance(ServiceDiscoveryObserver):
         get_logger(_logger_name).debug(
             f"Send Subscribe ACK for instance 0x{self._instance_id:04X}, service: 0x{self._service.id:04X}, TTL: {sd_event_group.sd_entry.ttl}"
         )
-        ack_entry = build_subscribe_eventgroup_ack_entry(
+
+        header_output = build_subscribe_eventgroup_ack_sd_header(
             service_id=sd_event_group.sd_entry.service_id,
             instance_id=sd_event_group.sd_entry.instance_id,
             major_version=sd_event_group.sd_entry.major_version,
             ttl=sd_event_group.sd_entry.ttl,
             event_group_id=sd_event_group.eventgroup_id,
-        )
-        header_output = build_subscribe_eventgroup_ack_sd_header(
-            entry=ack_entry, session_id=session_id, reboot_flag=reboot_flag
+            session_id=session_id,
+            reboot_flag=reboot_flag,
         )
 
         self._sd_sender.send_unicast(

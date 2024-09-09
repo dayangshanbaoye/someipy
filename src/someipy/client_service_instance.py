@@ -28,7 +28,7 @@ from someipy._internal.someip_sd_header import (
 from someipy._internal.someip_header import (
     SomeIpHeader,
 )
-from someipy._internal.someip_sd_builder import build_subscribe_eventgroup_entry
+from someipy._internal.someip_sd_builder import build_subscribe_eventgroup_sd_header
 from someipy._internal.service_discovery_abcs import (
     ServiceDiscoveryObserver,
     ServiceDiscoverySender,
@@ -312,7 +312,7 @@ class ClientServiceInstance(ServiceDiscoveryObserver):
                 ) = self._sd_sender.get_unicast_session_handler().update_session()
 
                 # Improvement: Pack all entries into a single SD message
-                subscribe_sd_header = build_subscribe_eventgroup_entry(
+                subscribe_sd_header = build_subscribe_eventgroup_sd_header(
                     service_id=self._service.id,
                     instance_id=self._instance_id,
                     major_version=self._service.major_version,
